@@ -2,6 +2,7 @@ import discord
 import asyncio
 import re
 import requests
+import sys
 
 client = discord.Client()
 pat = re.compile(r'\[\[(.*?)\]\]')
@@ -25,5 +26,7 @@ async def on_message(message):
         if resp.status_code == 200:
             await client.send_message(message.channel, resp.content.decode('UTF-8'))
             await asyncio.sleep(.05)
-
-client.run('MzQzNDM0MDAzNzMyMzY1MzEz.DGeXcw.EyLpdC6uRoS68lLMqfw1-7Gow70')
+if len(sys.argv) == 2:
+    client.run(sys.argv[1])
+else:
+    client.run(input())
