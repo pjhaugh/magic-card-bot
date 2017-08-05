@@ -17,8 +17,8 @@ async def on_ready():
 async def on_message(message):
     if message.author == client.user:
         return
-    requests = pat.findall(message.content)
-    for card in requests:
+    cards = pat.findall(message.content)
+    for card in cards:
         await client.send_message(message.channel, card)
 
 client.run('MzQzNDM0MDAzNzMyMzY1MzEz.DGeXcw.EyLpdC6uRoS68lLMqfw1-7Gow70')
