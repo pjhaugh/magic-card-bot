@@ -29,7 +29,12 @@ async def on_message(message):
         name = '+'.join(card.split())
         resp = requests.get(target.format(name))
         if resp.status_code == 200:
-            await client.send_message(message.channel, resp.content.decode('UTF-8'))
+            title, text = resp.content.decode('UTF-8').split('\n', 1)
+            url = resp.headers['X-Scryfall-Card']
+            img = resp.headers['X-Scryfall-Card-Image']
+            embed = discord.Embed(title=title, description=text, url=url)
+            embed.set_thumbnail(url=img)
+            await client.send_message(message.channel, embed=embed)
             await asyncio.sleep(.05)
         else:
             failures.append(card)
