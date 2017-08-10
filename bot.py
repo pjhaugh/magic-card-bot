@@ -8,7 +8,7 @@ client = discord.Client()
 pat = re.compile(r'\[\[(.*?)\]\]')
 target = 'https://api.scryfall.com/cards/named?fuzzy={}&format=text'
 autocomplete = 'https://api.scryfall.com/cards/autocomplete?q={}'
-search = """I don't recognize the name: {}
+search = """I don't recognize the name: "{}"
 Did you mean one of the following?
 {}"""
 
@@ -32,7 +32,7 @@ async def on_message(message):
             await client.send_message(message.channel, resp.content.decode('UTF-8'))
             await asyncio.sleep(.05)
         else:
-            failures.append(name)
+            failures.append(card)
     for name in failures:
         resp = requests.get(autocomplete.format(name))
         if resp.status_code == 200 and resp.json()['data']:
