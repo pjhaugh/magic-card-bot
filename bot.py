@@ -13,8 +13,11 @@ search = """I don't recognize the name: "{}"
 Did you mean one of the following? :manahw:
 {}"""
 
+replacer = mana.Mana()
+
 @client.event
 async def on_ready():
+    replacer.prime(client)
     print('Logged in as')
     print(client.user.name)
     print(client.user.id)
@@ -30,13 +33,12 @@ async def on_message(message):
         name = '+'.join(card.split())
         resp = requests.get(target.format(name))
         if resp.status_code == 200:
-            title, text = mana.mana_sub(resp.content.decode('UTF-8')).split('\n', 1)
+            title, text = replacer.mana_sub(resp.content.decode('UTF-8')).split('\n', 1)
             url = resp.headers['X-Scryfall-Card']
             img = resp.headers['X-Scryfall-Card-Image']
             embed = discord.Embed(title=title, description=text, url=url)
             embed.set_thumbnail(url=img)
             await client.send_message(message.channel, embed=embed)
-            await client.send_message(message.channel, text)
             await asyncio.sleep(.05)
         else:
             failures.append(card)
