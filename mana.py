@@ -9,7 +9,7 @@ class Mana:
     
     def prime(self, client):
         d = {e.name: e.id for e in client.get_all_emojis()}
-        self.mana_symbols = dict((re.escape(k), "<{}{}>".format(v, d[v.strip(':')]) if v.strip(':') in d else v) for k, v in self.mana_symbols.items())
+        self.mana_symbols = dict((re.escape(k), "<{}{}>".format(v, d[v.strip(':')]) if v.strip(':') in d else k) for k, v in self.mana_symbols.items())
         self.mana_pat = re.compile("|".join(self.mana_symbols.keys()))
 
     def mana_sub(self, text):
