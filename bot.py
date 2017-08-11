@@ -3,7 +3,7 @@ import asyncio
 import re
 import requests
 import sys
-import json
+import mana
 
 client = discord.Client()
 pat = re.compile(r'\[\[(.*?)\]\]')
@@ -12,12 +12,6 @@ autocomplete = 'https://api.scryfall.com/cards/autocomplete?q={}'
 search = """I don't recognize the name: "{}"
 Did you mean one of the following?
 {}"""
-
-with open("mana_symbols.json") as f:
-    mana_symbols = json.loads(f.read())
-	
-mana_symbols = dict((re.escape(k), v) for k, v in mana_symbols.items())
-mana_pat = re.compile("|".join(rep.keys()))
 
 @client.event
 async def on_ready():
@@ -36,12 +30,13 @@ async def on_message(message):
         name = '+'.join(card.split())
         resp = requests.get(target.format(name))
         if resp.status_code == 200:
-            title, text = mana_pat.sub(lambda a: mana_symbols[re.escape(a.group(0))] , resp.content.decode('UTF-8')).split('\n', 1)
+            title, text = mana.mana_sub(resp.content.decode('UTF-8')).split('\n', 1)
             url = resp.headers['X-Scryfall-Card']
             img = resp.headers['X-Scryfall-Card-Image']
             embed = discord.Embed(title=title, description=text, url=url)
             embed.set_thumbnail(url=img)
             await client.send_message(message.channel, embed=embed)
+			await client.send_message(message,channel, text)
             await asyncio.sleep(.05)
         else:
             failures.append(card)
