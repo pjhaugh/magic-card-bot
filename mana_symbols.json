@@ -6,7 +6,7 @@
 "{HR}":":manahr:",
 "{U/B}":":manaub:",
 "{S}":":manas:",
-"{WP}":":manawp:",
+"{W/P}":":manawp:",
 "{12}":":mana12:",
 "{7}":":mana7:",
 "{2/B}":":mana2b:",
@@ -40,7 +40,7 @@
 "{19}":":mana19:",
 "{∞}":":manainfinity:",
 "{U/R}":":manaur:",
-"{UP}":":manaup:",
+"{U/P}":":manaup:",
 "{T}":":manat:",
 "{W/U}":":manawu:",
 "{14}":":mana14:",
@@ -48,7 +48,7 @@
 "{B/G}":":manabg:",
 "{B/R}":":manabr:",
 "{E}":":manae:",
-"{GP}":":managp:",
+"{G/P}":":managp:",
 "{0}":":mana0:",
 "{5}":":mana5:",
 "{½}":":manahalf:",
@@ -57,5 +57,6 @@
 "{4}":":mana4:",
 "{17}":":mana17:",
 "{U}":":manau:",
-"{8}":":mana8:"
+"{8}":":mana8:",
+"{B/P}":":manabp:"
 }
