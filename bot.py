@@ -10,7 +10,7 @@ pat = re.compile(r'\[\[(.*?)\]\]')
 target = 'https://api.scryfall.com/cards/named?fuzzy={}&format=text'
 autocomplete = 'https://api.scryfall.com/cards/autocomplete?q={}'
 search = """I don't recognize the name: "{}"
-Did you mean one of the following?
+Did you mean one of the following? :manahw:
 {}"""
 
 @client.event
@@ -36,7 +36,7 @@ async def on_message(message):
             embed = discord.Embed(title=title, description=text, url=url)
             embed.set_thumbnail(url=img)
             await client.send_message(message.channel, embed=embed)
-			await client.send_message(message,channel, text)
+            await client.send_message(message.channel, text)
             await asyncio.sleep(.05)
         else:
             failures.append(card)
