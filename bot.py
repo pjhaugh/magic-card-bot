@@ -36,7 +36,7 @@ async def on_message(message):
             title, text = replacer.mana_sub(resp.content.decode('UTF-8')).split('\n', 1)
             url = resp.headers['X-Scryfall-Card']
             img = resp.headers['X-Scryfall-Card-Image']
-            embed = discord.Embed(title=title, description=text, url=url)
+            embed = discord.Embed(title=title, description=text, url=url, colour=discord.Colour(0x7289DA))
             embed.set_thumbnail(url=img)
             await client.send_message(message.channel, embed=embed)
             await asyncio.sleep(.05)
