@@ -10,7 +10,7 @@ pat = re.compile(r'\[\[(.*?)\]\]')
 target = 'https://api.scryfall.com/cards/named?fuzzy={}&format=text'
 autocomplete = 'https://api.scryfall.com/cards/autocomplete?q={}'
 search = """I don't recognize the name: "{}"
-Did you mean one of the following? :manahw:
+Did you mean one of the following?
 {}"""
 
 replacer = mana.Mana()
