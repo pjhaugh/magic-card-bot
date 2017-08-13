@@ -12,6 +12,7 @@ autocomplete = 'https://api.scryfall.com/cards/autocomplete?q={}'
 search = """I don't recognize the name: "{}"
 Did you mean one of the following?
 {}"""
+col = discord.Colour(0x7289DA)
 
 replacer = mana.Mana()
 
@@ -36,8 +37,12 @@ async def on_message(message):
             title, text = replacer.mana_sub(resp.content.decode('UTF-8')).split('\n', 1)
             url = resp.headers['X-Scryfall-Card']
             img = resp.headers['X-Scryfall-Card-Image']
-            embed = discord.Embed(title=title, description=text, url=url, colour=discord.Colour(0x7289DA))
-            embed.set_thumbnail(url=img)
+            if card.startswith('!'):
+                embed = discord.Embed(colour=col)
+                embed.set_image(url=img)
+            else:
+                embed = discord.Embed(title=title, description=text, url=url, colour=col)
+                embed.set_thumbnail(url=img)
             await client.send_message(message.channel, embed=embed)
             await asyncio.sleep(.05)
         else:
