@@ -31,7 +31,7 @@ async def on_message(message):
     cards = pat.findall(message.content)
     failures = []
     for card in cards:
-        name = '+'.join(card.split())
+        name = '+'.join(card.strip('!').split())
         resp = requests.get(target.format(name))
         if resp.status_code == 200:
             title, text = replacer.mana_sub(resp.content.decode('UTF-8')).split('\n', 1)
