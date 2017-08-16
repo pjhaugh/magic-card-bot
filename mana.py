@@ -8,8 +8,8 @@ class Mana:
             self.mana_symbols = json.loads(f.read())
     
     def prime(self, client):
-        d = {e.name: e.id for e in client.get_all_emojis()}
-        self.mana_symbols = dict((re.escape(k), "<{}{}>".format(v, d[v.strip(':')]) if v.strip(':') in d else k) for k, v in self.mana_symbols.items())
+        d = {e.name: str(e) for e in client.get_all_emojis()}
+        self.mana_symbols = {re.escape(k): d[v] if v in d else k for k, v in self.mana_symbols.items()}
         self.mana_pat = re.compile("|".join(self.mana_symbols.keys()))
 
     def mana_sub(self, text):
