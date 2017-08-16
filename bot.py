@@ -1,7 +1,7 @@
 import discord
 import asyncio
 import re
-import requests
+import aiohttp
 import sys
 import mana
 
@@ -32,26 +32,28 @@ async def on_message(message):
     failures = []
     for card in cards:
         name = '+'.join(card.strip('!').split())
-        resp = requests.get(target.format(name))
-        if resp.status_code == 200:
-            title, text = replacer.mana_sub(resp.content.decode('UTF-8')).split('\n', 1)
-            url = resp.headers['X-Scryfall-Card']
-            img = resp.headers['X-Scryfall-Card-Image']
-            if card.startswith('!'):
-                embed = discord.Embed(colour=col)
-                embed.set_image(url=img)
+        async with aiohttp.get(target.format(name)) as resp:
+            if resp.status == 200:
+                content = await resp.text()
+                title, text = replacer.mana_sub(content).split('\n', 1)
+                url = resp.headers['X-Scryfall-Card']
+                img = resp.headers['X-Scryfall-Card-Image']
+                if card.startswith('!'):
+                    embed = discord.Embed(colour=col)
+                    embed.set_image(url=img)
+                else:
+                    embed = discord.Embed(title=title, description=text, url=url, colour=col)
+                    embed.set_thumbnail(url=img)
+                await client.send_message(message.channel, embed=embed)
+                await asyncio.sleep(.05)
             else:
-                embed = discord.Embed(title=title, description=text, url=url, colour=col)
-                embed.set_thumbnail(url=img)
-            await client.send_message(message.channel, embed=embed)
-            await asyncio.sleep(.05)
-        else:
-            failures.append(card)
+                failures.append(card)
     for name in failures:
-        resp = requests.get(autocomplete.format(name))
-        if resp.status_code == 200 and resp.json()['data']:
-            await client.send_message(message.channel, search.format(name, '\n'.join(resp.json()['data'])))
-            await asyncio.sleep(.05)
+        async with aiohttp.get(autocomplete.format(name)) as resp:
+            json = await resp.json()
+            if resp.status == 200 and json['data']:
+                await client.send_message(message.channel, search.format(name, '\n'.join(json['data'])))
+                await asyncio.sleep(.05)
 
 
 			
